@@ -1,0 +1,74 @@
+# ─────────────────────────────────────────────────────────────
+# values.yaml — Default configuration for the helloworld chart
+# Override any of these values with:
+#   helm install ... --set key=value
+#   helm install ... -f my-values.yaml
+# ─────────────────────────────────────────────────────────────
+
+# Number of pod replicas
+replicaCount: 1
+
+# Docker image settings
+image:
+  repository: helloworld   # Docker image name (use registry/repo for remote)
+  tag: latest               # Image tag
+  pullPolicy: IfNotPresent  # Don't pull if already present locally
+
+# Image pull secrets (leave empty for public/local images)
+imagePullSecrets: []
+
+# Override the chart name
+nameOverride: ""
+fullnameOverride: ""
+
+# Kubernetes Service configuration
+service:
+  type: NodePort    # NodePort exposes the app on every node's IP
+  port: 80          # Port the Service listens on (cluster-internal)
+  targetPort: 8080  # Port the container listens on
+  nodePort: 30080   # External port on the Node (30000–32767)
+
+# Resource limits and requests
+resources:
+  requests:
+    memory: "256Mi"
+    cpu: "250m"
+  limits:
+    memory: "512Mi"
+    cpu: "500m"
+
+# Liveness probe — Kubernetes restarts the pod if this fails
+livenessProbe:
+  httpGet:
+    path: /actuator/health
+    port: 8080
+  initialDelaySeconds: 30
+  periodSeconds: 10
+  failureThreshold: 3
+
+# Readiness probe — Traffic is only sent when this passes
+readinessProbe:
+  httpGet:
+    path: /actuator/health
+    port: 8080
+  initialDelaySeconds: 20
+  periodSeconds: 5
+  failureThreshold: 3
+
+# Pod-level labels (additional)
+podLabels: {}
+
+# Pod annotations (e.g. for Prometheus scraping)
+podAnnotations: {}
+
+# Node selector, tolerations, affinity
+nodeSelector: {}
+tolerations: []
+affinity: {}
+
+# Environment variables to inject into the container
+env: []
+# Example:
+# env:
+#   - name: SPRING_PROFILES_ACTIVE
+#     value: prod

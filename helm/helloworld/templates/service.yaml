@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "helloworld.fullname" . }}
+  labels:
+    {{- include "helloworld.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.service.type }}
+  selector:
+    {{- include "helloworld.selectorLabels" . | nindent 4 }}
+  ports:
+    - name: http
+      protocol: TCP
+      port: {{ .Values.service.port }}           # Cluster-internal port
+      targetPort: {{ .Values.service.targetPort }} # Container port
+      {{- if eq .Values.service.type "NodePort" }}
+      nodePort: {{ .Values.service.nodePort }}    # External node port
+      {{- end }}

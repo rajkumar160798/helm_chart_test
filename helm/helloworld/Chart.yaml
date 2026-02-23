@@ -1,0 +1,20 @@
+apiVersion: v2
+name: helloworld
+description: A Helm chart to deploy the Spring Boot Hello World application on Kubernetes
+
+# Chart type (application | library)
+type: application
+
+# Chart version — bump this when you change the chart itself
+version: 0.1.0
+
+# App version — mirrors the Docker image tag
+appVersion: "1.0.0"
+
+keywords:
+  - spring-boot
+  - helloworld
+  - java
+
+maintainers:
+  - name: rajkumarmyakala

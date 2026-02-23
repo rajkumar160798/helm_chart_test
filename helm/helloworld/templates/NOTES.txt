@@ -1,0 +1,38 @@
+🎉 Hello World Spring Boot app deployed successfully!
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  Release : {{ .Release.Name }}
+  Chart   : {{ .Chart.Name }}-{{ .Chart.Version }}
+  Image   : {{ .Values.image.repository }}:{{ .Values.image.tag }}
+  Replicas: {{ .Values.replicaCount }}
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. Get the application URL:
+
+{{- if eq .Values.service.type "NodePort" }}
+   # If using minikube:
+   export NODE_IP=$(minikube ip)
+   export NODE_PORT={{ .Values.service.nodePort }}
+   echo "App URL: http://$NODE_IP:$NODE_PORT/hello"
+   curl http://$NODE_IP:$NODE_PORT/hello
+
+   # If using a regular Kubernetes node:
+   export NODE_IP=$(kubectl get nodes --namespace {{ .Release.Namespace }} -o jsonpath="{.items[0].status.addresses[0].address}")
+   curl http://$NODE_IP:{{ .Values.service.nodePort }}/hello
+{{- else if eq .Values.service.type "ClusterIP" }}
+   # Port-forward to access locally:
+   kubectl port-forward svc/{{ include "helloworld.fullname" . }} 8080:{{ .Values.service.port }} --namespace {{ .Release.Namespace }}
+   curl http://localhost:8080/hello
+{{- end }}
+
+2. Check pod status:
+   kubectl get pods -l "app.kubernetes.io/name={{ include "helloworld.name" . }}" --namespace {{ .Release.Namespace }}
+
+3. View logs:
+   kubectl logs -l "app.kubernetes.io/name={{ include "helloworld.name" . }}" --namespace {{ .Release.Namespace }}
+
+4. Upgrade the release (e.g., scale to 3 replicas):
+   helm upgrade {{ .Release.Name }} ./helm/helloworld --set replicaCount=3
+
+5. Uninstall:
+   helm uninstall {{ .Release.Name }}
