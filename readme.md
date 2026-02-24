@@ -1,4 +1,4 @@
-# 🚀 Spring Boot + Docker + Kubernetes + Helm — Complete Guide
+# 🚀 Spring Boot + Docker + Kubernetes + Helm — Complete Guide 
 
 > **Goal:** Deploy a simple Java "Hello World" web app to Kubernetes using Helm charts.  
 > This document explains **what each tool is**, **why we use it**, and **every step we took**.
